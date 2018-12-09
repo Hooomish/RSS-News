@@ -1,0 +1,61 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title Home</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+</head>
+<body>
+    <div class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                @Html.ActionLink("Главная", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+            </div>
+        </div>
+    </div>
+    <div class="container body-content">
+        @RenderBody()
+        <hr />
+    </div>
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @RenderSection("scripts", required: false)
+    <script>
+        function ToJavaScriptDate(value) {
+            var pattern = /Date\(([^)]+)\)/;
+            var results = pattern.exec(value);
+            var dt = new Date(parseFloat(results[1]));
+            return  dt.getDate() + "." + (dt.getMonth() + 1) + "." + dt.getFullYear() + " " + dt.getHours() + ":" + dt.getMinutes() + ":" + dt.getSeconds();
+        }
+        $(document).ready(function () {
+
+            $("#search").submit(function (e) {
+                $.ajax({
+                    type: "POST",
+                    url: "/Home/ReadNews",
+                    data: $("#search").serialize(),
+                    success: function (data) {
+                        $("#news").html("");
+                        var news = "";
+                        for (var i = 0; i < data.length; i++) {
+                            news += "<table class='table'><tr><td>" + data[i].SourceName + "</td><td>" + data[i].Title + "</td><td>" + data[i].Description + "</td><td>" + ToJavaScriptDate(data[i].PublicationDate) + "</td></tr></table>";
+                        }
+                        $("#news").html(news);
+                    }
+                });
+
+                e.preventDefault();
+            });
+        });
+    </script>
+</body>
+</html>

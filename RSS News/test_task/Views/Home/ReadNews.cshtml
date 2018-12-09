@@ -1,0 +1,36 @@
+﻿@model IQueryable<RSSHelper.Models.News>
+@{
+    ViewBag.Title = "ReadNews";
+}
+<h2>Новостная лента</h2><br />
+<form id="search">
+    Источник ленты
+    @Html.DropDownList("SourceId", ViewBag.Sources as SelectList)
+    <br /><br />
+    @Html.RadioButton("sort", "date")
+    <span>Сортировать по дате</span> <br />
+    @Html.RadioButton("sort", "source")
+    <span>Сортировать по источнику</span> <br /><br />
+    <button type="submit">Просмотреть</button><br /><br />
+</form>
+<div>
+    <table class="table" id="news">
+        <tr>
+            <td><p>Источник</p></td>
+            <td><p>Название новости</p></td>
+            <td><p>Описание новости</p></td>
+            <td><p>Дата публикации</p></td>
+        </tr>
+        @foreach (var i in Model)
+        {
+            <tr>
+                <td style="width:25%"><p>@i.Source.Name</p></td>
+                <td style="width:25%"><p>@i.Title</p></td>
+                <td style="width:25%"><p>@Html.Raw(i.Description)</p></td>
+                <td style="width:25%"><p>@i.PublicationDate.UtcDateTime</p></td>
+            </tr>
+        }
+    </table>
+</div>
+
+

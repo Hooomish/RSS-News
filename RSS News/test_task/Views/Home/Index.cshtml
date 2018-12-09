@@ -1,0 +1,13 @@
+﻿@model IEnumerable<RSSHelper.Models.Source>
+
+<div class="navbar-collapse collapse">
+    <h2>Новостная лента</h2><br />
+    <ul class="nav navbar-nav">
+        @foreach (var i in Model)
+        {
+            <li>
+                <a href="@Url.Action("ReadNews", "Home", new { id = i.Id })">@i.Name</a>
+            </li>
+        }
+    </ul>
+</div>
